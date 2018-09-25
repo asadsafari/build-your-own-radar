@@ -122,10 +122,11 @@ const Radar = function (size, radar) {
       .attr('class', blip.color());
   }
 
-  function circleLegend(x, y, group) {
+  function circleLegend(x, y, group,color) {
     return (group || svg).append('path')
       .attr('d', "M420.084,282.092c-1.073,0-2.16,0.103-3.243,0.313c-6.912,1.345-13.188,8.587-11.423,16.874c1.732,8.141,8.632,13.711,17.806,13.711c0.025,0,0.052,0,0.074-0.003c0.551-0.025,1.395-0.011,2.225-0.109c4.404-0.534,8.148-2.218,10.069-6.487c1.747-3.886,2.114-7.993,0.913-12.118C434.379,286.944,427.494,282.092,420.084,282.092")
-      .attr('transform', 'scale(' + (22 / 64) + ') translate(' + (-404 + x * (64 / 22) - 17) + ', ' + (-282 + y * (64 / 22) - 17) + ')');
+      .attr('transform', 'scale(' + (22 / 64) + ') translate(' + (-404 + x * (64 / 22) - 17) + ', ' + (-282 + y * (64 / 22) - 17) + ')')
+	  .attr('class', color)
   }
 
   function addRing(ring, order) {
@@ -318,8 +319,9 @@ const Radar = function (size, radar) {
   function drawLegend(order) {
     removeRadarLegend();
 
-    var triangleKey = "New or moved";
-    var circleKey = "No change";
+    var greenKey = "Adopted :)";
+    var redKey = "Blocked!";
+	var yellowKey = "In the way!";
 
     var container = d3.select('svg').append('g')
       .attr('class', 'legend legend'+"-"+order);
@@ -353,24 +355,33 @@ const Radar = function (size, radar) {
       .transition()
       .style('visibility', 'visible');
 
-    triangleLegend(x, y, container);
+    circleLegend(x, y, container,'green');
 
     container
       .append('text')
       .attr('x', x + 15)
       .attr('y', y + 5)
       .attr('font-size', '0.8em')
-      .text(triangleKey);
+      .text(greenKey);
 
 
-    circleLegend(x, y + 20, container);
+    circleLegend(x, y + 20, container, 'yellow');
 
     container
       .append('text')
       .attr('x', x + 15)
       .attr('y', y + 25)
       .attr('font-size', '0.8em')
-      .text(circleKey);
+      .text(yellowKey);
+	  
+	  circleLegend(x, y + 40, container, 'red');
+
+    container
+      .append('text')
+      .attr('x', x + 15)
+      .attr('y', y + 45)
+      .attr('font-size', '0.8em')
+      .text(redKey);
   }
 
   function redrawFullRadar() {
