@@ -36,7 +36,7 @@ const InputSanitizer = function () {
       blip.isNew = sanitizeHtml(blip.isNew, restrictedOptions);
       blip.ring = sanitizeHtml(blip.ring, restrictedOptions);
       blip.quadrant = sanitizeHtml(blip.quadrant, restrictedOptions);
-
+      blip.color = sanitizeHtml(blip.color, restrictedOptions);
       return blip;
     };
 
